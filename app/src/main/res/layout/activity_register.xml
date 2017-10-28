@@ -10,9 +10,9 @@
         android:id="@+id/editText"
         android:inputType="text"
         android:hint="User Name"
-        android:layout_marginBottom="83dp"
+        android:layout_marginBottom="84dp"
         android:layout_above="@+id/radioGroup"
-        android:layout_alignStart="@+id/button" />
+        android:layout_alignStart="@+id/register" />
 
     <RadioGroup
         android:layout_width="fill_parent"
