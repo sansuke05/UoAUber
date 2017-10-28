@@ -1,10 +1,12 @@
 package com.alicelab.uoauber;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,43 +27,60 @@ import java.util.ArrayList;
  * Created by user on 2017/10/28.
  */
 
-public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
-
-    private MainActivity main_;
+public class PostAPIConnection extends AsyncTask<Void, Void, JSONObject> {
+    private Context context;
     private ProgressDialog progressDialog_ = null;
+    private String requestMode = null;
+    private String post_json = null;
 
-    public GetAPIConnection(MainActivity main){
+    public PostAPIConnection(Context context, String requestMode, String post_json){
         super();
-        main_ = main;
+        this.context = context;
+        this.requestMode = requestMode;
+        this.post_json = post_json;
     }
 
     @Override
     protected void onPreExecute() {
 
         // 進捗ダイアログを開始
-        progressDialog_ = new ProgressDialog(main_);
-        progressDialog_.setMessage("List Loading ...");
+        progressDialog_ = new ProgressDialog(context);
+        progressDialog_.setMessage("Sending message ...");
         progressDialog_.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog_.setCancelable(true);
         progressDialog_.show();
     }
 
     @Override
-    protected JSONArray doInBackground(Void... params) {
+    protected JSONObject doInBackground(Void... params) {
         HttpURLConnection con;
         URL url;
-        String urlStr = "http://222.158.238.93/get_want_ride.php";
-        JSONArray jsonArray = null;
+        String urlStr;
+        JSONObject get_json = null;
         BufferedReader reader;
+        OutputStream os;
+        PrintStream ps;
+
+        if (requestMode.equals("REGISTER")) urlStr = "http://222.158.238.93/register.php";
+        else urlStr = "";
 
         try {
             url = new URL(urlStr);
             con = (HttpURLConnection)url.openConnection();
             con.setReadTimeout(10000);
             con.setConnectTimeout(20000);
-            con.setRequestMethod("GET");
+            con.setRequestMethod("POST");
+            con.setDoInput(true);
+            con.setDoOutput(true);
+            con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+            //make request body
+            os = con.getOutputStream();
+            ps = new PrintStream(os);
+            ps.print(post_json);
 
             con.connect();
+            ps.close();
 
             int status = con.getResponseCode();
 
@@ -77,7 +98,7 @@ public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
 
                     in.close();
 
-                    jsonArray = new JSONArray(readStr);
+                    get_json = new JSONObject(readStr);
                     break;
                 case HttpURLConnection.HTTP_UNAUTHORIZED:
                     break;
@@ -94,44 +115,29 @@ public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
             e.printStackTrace();
         }
 
-        return jsonArray;
+        return get_json;
     }
 
     @Override
-    protected void onPostExecute(JSONArray result) {
+    protected void onPostExecute(JSONObject result) {
         super.onPostExecute(result);
-
-        ArrayList<DriverData> list = new ArrayList<>();
-        DriverAdapter dAdapter = new DriverAdapter(main_);
-        JSONObject json;
-
-        try {
-            for (int i = 0; i < result.length(); i++) {
-                json = result.getJSONObject(i);
-
-                DriverData driver = new DriverData();
-                driver.setName(json.getString("uname"));
-                driver.setDepartureTime(json.getString("res_time"));
-                driver.setDeparturePlace(json.getString("res_latitude"));
-                list.add(driver);
-
-                dAdapter.setDriverList(list);
-                main_.listView.setAdapter(dAdapter);
-
-                main_.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-
-                    }
-                });
-            }
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
 
         if (progressDialog_.isShowing()) {
 
             // 進捗ダイアログを終了
             progressDialog_.dismiss();
+        }
+
+        if (requestMode.equals("REGISTER")) {
+            try {
+                if (result.getString("success").equals("1")) {
+                    Toast.makeText(context, "会員登録完了", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Register Filed! \nPlease try again!", Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
