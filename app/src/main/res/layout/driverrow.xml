@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/driver_name"
+            android:background="#c5ffff"
+            android:layout_width="520dp"
+            android:layout_height="28dp"
+            android:text="ドライバー名"
+            android:textSize="24sp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="0dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:layout_editor_absoluteY="18dp"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/departure_time"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:text="出発時間："
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="162dp"
+            android:layout_centerVertical="true" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:text="乗せて！"
+            tools:layout_editor_absoluteX="194dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_below="@+id/driver_name"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="13dp" />
+
+        <TextView
+            android:id="@+id/departure_place"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="出発場所"
+            android:textSize="24sp"
+            android:layout_alignBottom="@+id/button" />
+
+    </RelativeLayout>
+</LinearLayout>
