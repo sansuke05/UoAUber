@@ -128,6 +128,11 @@ public class PostAPIConnection extends AsyncTask<Void, Void, JSONObject> {
             progressDialog_.dismiss();
         }
 
+        if (result == null){
+            Toast.makeText(context, "Connection Error!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (requestMode.equals("REGISTER")) {
             try {
                 if (result.getString("success").equals("1")) {

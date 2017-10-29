@@ -13,10 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-
         </activity>
+
         <activity
             android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".StartActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

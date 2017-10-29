@@ -19,13 +19,23 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity implements LocationListener {
 
     private LocationManager mLocationManager;
-    private String latitude = "";
-    private String longitude = "";
+    private String name = "";
+    private String latitude = "120.00";
+    private String longitude = "35.00";
+    private String carFlag = "0";
+
+    private PostAPIConnection task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +43,8 @@ public class RegisterActivity extends AppCompatActivity implements LocationListe
         setContentView(R.layout.activity_register);
 
         Button button = (Button)findViewById(R.id.register);
-        
+        final EditText editText = (EditText)findViewById(R.id.editText);
+        final RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
@@ -45,7 +56,33 @@ public class RegisterActivity extends AppCompatActivity implements LocationListe
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int checkedId = radioGroup.getCheckedRadioButtonId();
+                if (-1 != checkedId){
+                    if (((RadioButton)findViewById(checkedId)).getText().toString().equals("あり")) carFlag = "1";
+                    else carFlag = "0";
 
+                    name = editText.getText().toString();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "車の有無を選択して下さい", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                JSONObject json = null;
+                try {
+                    //json作成
+                    json = new JSONObject();
+                    json.accumulate("name", name);
+                    json.accumulate("home_latitude", latitude);
+                    json.accumulate("home_longitude", longitude);
+                    json.accumulate("have_car", carFlag);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+                Log.d("debug",json.toString());
+
+                task = new PostAPIConnection(RegisterActivity.this, "REGISTER", json.toString());
+                task.execute();
             }
         });
     }
@@ -128,5 +165,6 @@ public class RegisterActivity extends AppCompatActivity implements LocationListe
     public void onProviderDisabled(String provider) {
 
     }
+
 
 }
