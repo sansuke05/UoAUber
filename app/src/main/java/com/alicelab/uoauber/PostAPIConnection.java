@@ -135,7 +135,7 @@ public class PostAPIConnection extends AsyncTask<Void, Void, JSONObject> {
 
         if (requestMode.equals("REGISTER")) {
             try {
-                if (result.getString("success").equals("1")) {
+                if (result.getString("result").equals("1")) {
                     Toast.makeText(context, "会員登録完了", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context, "Register Filed! \nPlease try again!", Toast.LENGTH_LONG).show();
