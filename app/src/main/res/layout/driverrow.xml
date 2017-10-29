@@ -37,7 +37,9 @@
             android:textSize="24sp"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="162dp"
-            android:layout_centerVertical="true" />
+            android:layout_alignTop="@+id/button"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/button" />
 
         <Button
             android:id="@+id/button"
@@ -57,7 +59,10 @@
             android:layout_height="wrap_content"
             android:text="出発場所"
             android:textSize="24sp"
-            android:layout_alignBottom="@+id/button" />
+            android:layout_below="@+id/departure_time"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/button" />
 
     </RelativeLayout>
 </LinearLayout>

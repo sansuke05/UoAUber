@@ -48,7 +48,7 @@ public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
     protected JSONArray doInBackground(Void... params) {
         HttpURLConnection con;
         URL url;
-        String urlStr = "http://222.158.238.93/get_want_ride.php";
+        String urlStr = "http://222.158.238.93/get_supply_car.php";
         JSONArray jsonArray = null;
         BufferedReader reader;
 
@@ -98,7 +98,7 @@ public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
     }
 
     @Override
-    protected void onPostExecute(JSONArray result) {
+    protected void onPostExecute(final JSONArray result) {
         super.onPostExecute(result);
 
         ArrayList<DriverData> list = new ArrayList<>();
@@ -112,7 +112,7 @@ public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
                 DriverData driver = new DriverData();
                 driver.setName(json.getString("uname"));
                 driver.setDepartureTime(json.getString("res_time"));
-                driver.setDeparturePlace(json.getString("res_latitude"));
+                driver.setDeparturePlace(json.getString("address"));
                 list.add(driver);
 
                 dAdapter.setDriverList(list);
@@ -120,7 +120,21 @@ public class GetAPIConnection extends AsyncTask<Void, Void, JSONArray> {
 
                 main_.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                        try {
+                            String user = "taka"; //デバッグ用
+                            String supply_id = result.getJSONObject(position).getString("id");
+                            JSONObject post_json = new JSONObject();
+                            post_json.accumulate("id", user);
+                            post_json.accumulate("supply_car_id", supply_id);
 
+                            Log.d("debug",post_json.toString());
+
+                            PostAPIConnection task = new PostAPIConnection(main_, "REQUEST", post_json.toString());
+                            task.execute();
+
+                        } catch (JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

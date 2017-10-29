@@ -19,12 +19,42 @@ public class StartActivity extends AppCompatActivity {
 
         Button ride_button = (Button)findViewById(R.id.ride_button);
         Button register_button = (Button)findViewById(R.id.register_button);
+        Button add_driver_button = (Button)findViewById(R.id.add_driver_button);
 
         ride_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(this, MainActivity.class);
+                startMainActivity();
             }
         });
+
+        register_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startRegisterActivity();
+            }
+        });
+
+        add_driver_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startDriverRegistorationActivity();
+            }
+        });
+    }
+
+    private void startMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void startRegisterActivity(){
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    private void startDriverRegistorationActivity(){
+        Intent intent = new Intent(this, DriverRegistorationActivity.class);
+        startActivity(intent);
     }
 }

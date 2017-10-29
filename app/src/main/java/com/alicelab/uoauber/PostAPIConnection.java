@@ -143,6 +143,16 @@ public class PostAPIConnection extends AsyncTask<Void, Void, JSONObject> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else {
+            try {
+                if (result.getString("result").equals("1")) {
+                    Toast.makeText(context, "リクエスト送信完了", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "Request Filed! \nPlease try again!", Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
