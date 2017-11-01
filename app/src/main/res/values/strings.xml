@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">UoAUber</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <style name="AppTheme" parent="AppTheme.NoActionBar" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

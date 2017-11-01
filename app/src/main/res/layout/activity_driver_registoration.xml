@@ -24,19 +24,21 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/setTimeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/timeView"
         android:layout_centerHorizontal="true"
-        android:text="出発日時を設定" />
+        android:text="出発日時を設定"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="登録"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_marginBottom="74dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/setTimeButton"
